@@ -19,6 +19,7 @@ int main()
 	HamiltonianCipher *pCipher = new HamiltonianCipher(crypt, /*input*/ 1);
 
 	pCipher->init();
+	pCipher->debug();
 
 	delete pCipher;
 	pCipher = NULL;
@@ -42,6 +43,7 @@ int encryptOrDecrypt()
 		<< "2) Decrpyt" << endl
 		<< "Selection: ";
 	cin >> sel;
+	cout << endl;
 	return sel - 1;
 }
 
@@ -53,5 +55,7 @@ int inputOrFile()
 		<< "2) Read in key and text from file" << endl
 		<< "Selection: ";
 	cin >> sel;
+	cin.get();
+	cout << endl;
 	return sel - 1;
 }

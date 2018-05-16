@@ -11,10 +11,37 @@ HamiltonianCipher::HamiltonianCipher(int crypt, int input)
 	mInputMethod(input)
 {}
 
+void HamiltonianCipher::debug()
+{
+	cout << endl << "\t\t\t AXES" << endl;
+	cout << endl << "X\t\t\tY\t\t\tZ" << endl;
+	for (size_t i = 0; i < mXAxis.length(); i++)
+	{
+		cout << mXAxis[i] << "\t("
+			<< i << ", " << 0 << ", " << 0 << ")\t"
+			<< mYAxis[i] << "\t("
+			<< 0 << ", " << i << ", " << 0 << ")\t"
+			<< mZAxis[i] << "\t("
+			<< 0 << ", " << 0 << ", " << i << ")" << endl;
+	}
+	cout << endl;
+}
+
+void HamiltonianCipher::decrypt()
+{
+
+}
+
+void HamiltonianCipher::encrypt()
+{
+
+}
+
 // exits the program
 void HamiltonianCipher::exitProgram()
 {
 	cout << "Thank you for using my cipher!" << endl;
+	cin.get();
 	exit(-1);
 }
 
@@ -97,13 +124,16 @@ void HamiltonianCipher::init()
 
 	case 2: // read in key, ciphertext/plaintext from a file
 		mIsManualInput = false;
+		getFilePathInput();
 		break;
 	}
 
-	// populate axes
-	populateXAxis();
-	populateYAxis();
-	populateZAxis();
+	// populate the axes
+	populateAxes();
+
+	// scramble the Y and Z axes
+	scrambleYAxis();
+	scrambleZAxis();
 }
 
 /*
@@ -123,7 +153,7 @@ void HamiltonianCipher::populateAlphabet()
 	setAlphabet(ss.str());
 }
 
-string HamiltonianCipher::populateAxisWithKey(char axis)
+string HamiltonianCipher::populateAxisWithKey()
 {
 	bool repeat = false;
 	stringstream ss;
@@ -148,12 +178,14 @@ string HamiltonianCipher::populateAxisWithKey(char axis)
 		}
 
 		if (!repeat)
-			ss << tolower(key[i]);
+			ss << key[i];
 		else
 			continue;
 	}
 
-	return ss.str();
+	key = stripSpaces(ss.str());
+
+	return key;
 }
 
 /*
@@ -167,18 +199,58 @@ populates the X axis by:
 		that were in the key)
 		*****NOTE: order of ASCII characters is according to ASCII table
 */
-void HamiltonianCipher::populateXAxis()
+void HamiltonianCipher::populateAxes()
 {
-	
+	// stripped key without repeats
+	string tmp = populateAxisWithKey();
+
+	// begin populating axes
+	int keyOffset = (int)tmp.length();
+
+	stringstream ssAxis;
+	ssAxis << tmp;
+	bool repeat = false;
+
+	// full alphabet
+	string alphabet = getAlphabet();
+
+	// run through each letter of the full alphabet
+	for (size_t i = 0; i < alphabet.size(); i++)
+	{
+		if (repeat)
+			repeat = !repeat;
+
+		// run through the axis
+		for (size_t j = 0; j < ssAxis.str().length(); j++)
+		{
+			// if letter is a repeat
+			if (ssAxis.str()[j] == alphabet[i])
+			{
+				repeat = true;
+				break;
+			}
+		}
+
+		// if current alphabet letter is not a repeat
+		// add it to the axis stringstream
+		if (!repeat)
+			ssAxis << alphabet[i];
+	}
+
+	// set all axes to the completed axis stringstream
+	mXAxis = mYAxis = mZAxis = ssAxis.str();
 }
 
 /*
-populates the Y axis by:
+scrambles the Y axis by:
 -	reversing the X axis
 */
-void HamiltonianCipher::populateYAxis()
+void HamiltonianCipher::scrambleYAxis()
 {
-
+	string tmp;
+	for (size_t i = 0; i < mYAxis.length(); i++)
+		tmp.insert(0, 1, mYAxis[i]);
+	mYAxis = tmp;
 }
 
 /*
@@ -189,31 +261,56 @@ populates the Z axis by:
 -	run through swapping every two letters
 
 */
-void HamiltonianCipher::populateZAxis()
+void HamiltonianCipher::scrambleZAxis()
 {
+	string tmp = mZAxis;
 
+	// cut the axis in half and swap the two halves
+	for (size_t i = 0; i < mZAxis.length() / 2; i++)
+	{
+		int j = i + (mZAxis.length() / 2);
+		if (j < (int)mZAxis.length())
+		{
+			char tmpC = tmp[i];
+			tmp[i] = tmp[j];
+			tmp[j] = tmpC;
+		}
+	}
+
+	// run through again swapping every two letters
+	for (size_t i = 0; i < mZAxis.length(); i += 2)
+	{
+		if (i < tmp.length() - 1)
+		{
+			char tmpC = tmp[i];
+			tmp[i] = tmp[i + 1];
+			tmp[i + 1] = tmpC;
+		}
+	}
+
+	mZAxis = tmp;
 }
 
 // set all the letters in the specified string to the specified case
 string HamiltonianCipher::setCase(string s, char sCase)
 {
-	string tmp = "";
+	stringstream ss;
 	switch (sCase)
 	{
 	case 'l':
 	case 'L':
 		for (size_t i = 0; i < s.length(); i++)
-			tmp[i] = tolower(s[i]);
+			ss << tolower(s[i]);
 
 	case 'u':
 	case 'U':
 		for (size_t i = 0; i < s.length(); i++)
-			tmp[i] = toupper(s[i]);
+			ss << toupper(s[i]);
 		break;
 		break;
 
 	}
-	return tmp;
+	return ss.str();
 }
 
 // take a string input and output the same string without any spaces
@@ -230,6 +327,14 @@ string HamiltonianCipher::stripSpaces(string s)
 		s = s + tmp;
 	}
 	return s;
+}
+
+void HamiltonianCipher::update()
+{
+	if (mIsEncrypt)
+		encrypt();
+	else
+		decrypt();
 }
 
 HamiltonianCipher::~HamiltonianCipher()

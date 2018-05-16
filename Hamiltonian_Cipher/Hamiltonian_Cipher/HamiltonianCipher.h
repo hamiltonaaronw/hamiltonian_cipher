@@ -40,10 +40,12 @@ private:
 
 	// populaters
 	void populateAlphabet();
-	string populateAxisWithKey(char axis);
-	void populateXAxis();
-	void populateYAxis();
-	void populateZAxis();
+	string populateAxisWithKey();
+	void populateAxes();
+
+	// scramble the axes
+	void scrambleYAxis();
+	void scrambleZAxis();
 
 	// private input getters
 	void getKeyInput();
@@ -65,6 +67,12 @@ private:
 	// case setter
 	string setCase(string s, char sCase);
 
+	// encrypt a message
+	void encrypt();
+
+	// decrypt a message
+	void decrypt();
+
 	// exit program
 	void exitProgram();
 
@@ -72,8 +80,12 @@ public:
 	HamiltonianCipher(int crypt, int input);
 	~HamiltonianCipher();
 
-	void debug();
-	void encrypt();
-
+	// initialize
 	void init();
+
+	// output axis information
+	void debug();
+
+	// update
+	void update();
 };
