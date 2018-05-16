@@ -18,9 +18,6 @@ private:
 	int mInputMethod;
 	bool mIsManualInput;
 
-	// strip spaces from specified string
-	string stripSpaces(string s);
-
 	// alphabet
 	string mFullAlphabet;
 
@@ -34,9 +31,14 @@ private:
 
 	// ciphertext variables
 	string mCiphertextOrig;
+	string mCiphertextEncrypted;
 
 	// plaintext variables
 	string mPlaintextOrig;
+	string mPlaintextDecrypted;
+
+	// strip spaces from specified string
+	string stripSpaces(string s);
 
 	// populaters
 	void populateAlphabet();
@@ -75,6 +77,19 @@ private:
 
 	// exit program
 	void exitProgram();
+
+	// plaintext/ciphertext setters
+	void setPlaintext(string s) { mPlaintextOrig = s; };
+	void setPlaintextDecrypted(string s) { mPlaintextDecrypted = s; };
+	void setCiphertext(string s) { mCiphertextOrig = s; };
+	void setCiphertextEncrypted(string s) { mCiphertextEncrypted = s; };
+
+	// plaintext/ciphertext getters
+	string getPlaintextOrig() { return mPlaintextOrig; };
+	string getPlaintextDecrypted() { return mPlaintextDecrypted; };
+	string getCiphertextOrig() { return mCiphertextOrig; };
+	string getCiphertextEncrypted() { return mCiphertextEncrypted; };
+
 
 public:
 	HamiltonianCipher(int crypt, int input);

@@ -20,6 +20,7 @@ int main()
 
 	pCipher->init();
 	pCipher->debug();
+	pCipher->update();
 
 	delete pCipher;
 	pCipher = NULL;
@@ -40,11 +41,11 @@ int encryptOrDecrypt()
 	int sel;
 	cout << "Would you like to" << endl
 		<< "1) Encrypt" << endl
-		<< "2) Decrpyt" << endl
+		<< "2) Decrypt" << endl
 		<< "Selection: ";
 	cin >> sel;
 	cout << endl;
-	return sel - 1;
+	return sel;
 }
 
 int inputOrFile()
@@ -57,5 +58,5 @@ int inputOrFile()
 	cin >> sel;
 	cin.get();
 	cout << endl;
-	return sel - 1;
+	return sel;
 }
