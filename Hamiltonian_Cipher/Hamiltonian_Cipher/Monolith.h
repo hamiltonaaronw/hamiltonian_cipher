@@ -19,7 +19,6 @@ a fairly small program
 #include <ctype.h>
 #include <cmath>
 #include <fstream>
-
 #include <vector>
 
 using namespace std;

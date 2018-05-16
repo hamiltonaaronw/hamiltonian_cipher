@@ -16,7 +16,7 @@ int main()
 	int crypt = encryptOrDecrypt(),
 		input = inputOrFile();
 
-	HamiltonianCipher *pCipher = new HamiltonianCipher(/*crypt*/ 1, input);
+	HamiltonianCipher *pCipher = new HamiltonianCipher(crypt, /*input*/ 1);
 
 	pCipher->init();
 
