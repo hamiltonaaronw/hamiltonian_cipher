@@ -136,9 +136,14 @@ void HamiltonianCipher::decrypt()
 			file << endl << getPlaintextDecrypted() << endl;
 		file.close();
 	}
-	else
+	else // output information to new file if entered manually
 	{
-		// ****TO-DO: create a txt file to send all the information out to
+		ofstream newFile;
+		newFile.open("decrypt.txt");//, ios::app);
+		newFile << getKey() << endl << endl
+			<< getCiphertextOrig() << endl << endl
+			<< getPlaintextDecrypted() << endl << endl;
+		newFile.close();
 	}
 }
 
@@ -254,9 +259,14 @@ void HamiltonianCipher::encrypt()
 			file << endl << getCiphertextEncrypted() << endl;
 		file.close();
 	}
-	else
+	else // write information out to new file if input manually
 	{
-		// ****TO-DO: create a txt file to send all the information out to
+		ofstream newFile;
+		newFile.open("encrypt.txt");// , ios::app);
+		newFile << getKey() << endl << endl
+			<< getPlaintextOrig() << endl << endl
+			<< getCiphertextEncrypted() << endl;
+		newFile.close();
 	}
 }
 
