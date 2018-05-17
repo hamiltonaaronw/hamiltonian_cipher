@@ -242,10 +242,11 @@ void HamiltonianCipher::getCiphertextInput()
 	setCiphertext(ciphertext);
 }
 
-string HamiltonianCipher::getFilePathInput()
+void HamiltonianCipher::getFilePathInput()
 {
 	bool validPath = false;
 	string path;
+
 	// to ensure that the file path is valid
 	while (!validPath)
 	{
@@ -255,6 +256,7 @@ string HamiltonianCipher::getFilePathInput()
 		if (path == "x")
 			exitProgram();
 
+		// check if file path is valid
 		fstream tmpFile;
 		tmpFile.open(path);
 		if (!tmpFile)
@@ -262,19 +264,60 @@ string HamiltonianCipher::getFilePathInput()
 		else
 		{
 			validPath = true;
+			tmpFile.close();
 			break;
 		}
 		tmpFile.close();
 	}
 
-	return path;
+	setFilePath(path);
 }
 
-void HamiltonianCipher::getInformationFromFile(string path, bool isEncrypt)
+void HamiltonianCipher::getInformationFromFile(bool isEncrypt)
 {
 	// ****TODO:	read in file from file path
 	//				get key and ciphertext or plaintext
 	//				from the file
+
+	// file path
+	string path = getFilePath();
+
+	stringstream ssText;
+	string key, text, junk;
+
+	fstream file;
+	file.open(path, ios::in);
+	if (!file)
+		cout << "Error: invalid file" << endl;
+	else
+	{
+		// read in the key from the file
+		getline(file, key);
+		// set the key
+		setKey(key);
+
+		// empty space
+		getline(file, junk);
+
+		// read in the text from the file
+		while (!file.eof())
+		{
+			getline(file, text);
+			ssText << text;
+		}
+	}
+	file.close();
+
+	if (isEncrypt)
+		setPlaintext(ssText.str());
+	else
+		setCiphertext(ssText.str());
+
+	cout << "getInformationFromFile() line 316 key: " << getKey() << endl;
+	if (isEncrypt)
+		cout << "getInformationFromFile() line 318 plaintext: " << getPlaintextOrig() << endl;
+	else
+		cout << "getInformationFromFile() line 320 ciphertext: " << getCiphertextOrig() << endl;
 }
 
 // get key from console input (for both encrypting and decrypting)
@@ -315,6 +358,7 @@ void HamiltonianCipher::init()
 	case 2: // read in key, ciphertext/plaintext from a file
 		mIsManualInput = false;
 		getFilePathInput();
+		getInformationFromFile(mIsEncrypt);
 		break;
 	}
 

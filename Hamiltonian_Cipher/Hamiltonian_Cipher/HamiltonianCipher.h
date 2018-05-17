@@ -40,6 +40,9 @@ private:
 	// strip spaces from specified string
 	string stripSpaces(string s);
 
+	// file path
+	string mFilePath;
+
 	// populaters
 	void populateAlphabet();
 	string populateAxisWithKey();
@@ -55,8 +58,12 @@ private:
 	void getCiphertextInput();
 
 	// read in key and cipher/plaintext from file
-	string getFilePathInput();
-	void getInformationFromFile(string path, bool isEncrypt);
+	void getFilePathInput();
+	void getInformationFromFile(bool isEncrypt);
+
+	// file path getter and setter
+	void setFilePath(string s) { mFilePath = s; };
+	string getFilePath() { return mFilePath; };
 
 	// private variable getters
 	string getAlphabet() { return mFullAlphabet; };

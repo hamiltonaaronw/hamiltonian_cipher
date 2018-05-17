@@ -16,7 +16,7 @@ int main()
 	int crypt = encryptOrDecrypt(),
 		input = inputOrFile();
 
-	HamiltonianCipher *pCipher = new HamiltonianCipher(crypt, /*input*/ 1);
+	HamiltonianCipher *pCipher = new HamiltonianCipher(crypt, input);
 
 	pCipher->init();
 	pCipher->debug();
@@ -75,11 +75,13 @@ int inputOrFile()
 	}
 	
 	// TEMPORARY - will always return 1 until I get file i/o integrated
+	/*
 	if (sel == 2)
 	{
 		cout << "Sorry, File I/O not in yet, enter information manually!" << endl;
 		sel = 1;
 	}
+	*/
 
 	cout << endl;
 	return sel;

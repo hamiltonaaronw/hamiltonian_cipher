@@ -118,6 +118,9 @@
     <ClCompile Include="HamiltonianCipher.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="example.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
