@@ -47,9 +47,12 @@ Decrypt a message by:
 */
 void HamiltonianCipher::decrypt()
 {
+	cout << "*************************" << endl;
+	cout << "*\tDECRYPTING\t*" << endl;
+	cout << "*************************" << endl;
+
 	// strip spaces from ciphertext
 	string cText = setCase(stripSpaces(mCiphertextOrig), 'l');
-	cout << "decrypt() line 51 stripped lower case ciphertext: " << cText << endl;
 	
 	string alphabet = getAlphabet();
 
@@ -122,7 +125,21 @@ void HamiltonianCipher::decrypt()
 	// set the decrypted plaintext to the final stringstream
 	setPlaintextDecrypted(setCase(ssPlain.str(), 'l'));
 
-	// ***TO-DO: output decrypted message to a file
+	// if the information was read in from a file
+	if (!mIsManualInput)
+	{
+		fstream file;
+		file.open(getFilePath(), ios::app);
+		if (!file)
+			cout << "Could not find file to write decryption out to" << endl;
+		else
+			file << endl << getPlaintextDecrypted() << endl;
+		file.close();
+	}
+	else
+	{
+		// ****TO-DO: create a txt file to send all the information out to
+	}
 }
 
 /*
@@ -144,6 +161,10 @@ Encrypt a message by:
 */
 void HamiltonianCipher::encrypt()
 {
+	cout << "*************************" << endl;
+	cout << "*\tENCRYPTING\t*" << endl;
+	cout << "*************************" << endl;
+
 	// strip spaces from plaintext
 	string pText = setCase(stripSpaces(getPlaintextOrig()), 'l');
 	
@@ -222,7 +243,21 @@ void HamiltonianCipher::encrypt()
 	// set the encrypted ciphertext to the new string
 	setCiphertextEncrypted(setCase(ssCipher.str(), 'u'));
 
-	// ****TO-DO: output to a file
+	// if the information was read in from a file
+	if (!mIsManualInput)
+	{
+		fstream file;
+		file.open(getFilePath(), ios::app);
+		if (!file)
+			cout << "Could not find file to write encryption out to" << endl;
+		else
+			file << endl << getCiphertextEncrypted() << endl;
+		file.close();
+	}
+	else
+	{
+		// ****TO-DO: create a txt file to send all the information out to
+	}
 }
 
 // exits the program
@@ -275,10 +310,6 @@ void HamiltonianCipher::getFilePathInput()
 
 void HamiltonianCipher::getInformationFromFile(bool isEncrypt)
 {
-	// ****TODO:	read in file from file path
-	//				get key and ciphertext or plaintext
-	//				from the file
-
 	// file path
 	string path = getFilePath();
 
@@ -308,16 +339,10 @@ void HamiltonianCipher::getInformationFromFile(bool isEncrypt)
 	}
 	file.close();
 
-	if (isEncrypt)
+	if (isEncrypt) // if encrypting, set plaintext to text read in from file
 		setPlaintext(ssText.str());
-	else
+	else // if decrypting, set ciphertext to text read in from file
 		setCiphertext(ssText.str());
-
-	cout << "getInformationFromFile() line 316 key: " << getKey() << endl;
-	if (isEncrypt)
-		cout << "getInformationFromFile() line 318 plaintext: " << getPlaintextOrig() << endl;
-	else
-		cout << "getInformationFromFile() line 320 ciphertext: " << getCiphertextOrig() << endl;
 }
 
 // get key from console input (for both encrypting and decrypting)

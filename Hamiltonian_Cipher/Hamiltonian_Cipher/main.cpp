@@ -74,15 +74,6 @@ int inputOrFile()
 			cout << "Sorry, invalid input. Try again!" << endl << endl;
 	}
 	
-	// TEMPORARY - will always return 1 until I get file i/o integrated
-	/*
-	if (sel == 2)
-	{
-		cout << "Sorry, File I/O not in yet, enter information manually!" << endl;
-		sel = 1;
-	}
-	*/
-
 	cout << endl;
 	return sel;
 }
